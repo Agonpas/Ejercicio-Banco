@@ -1,101 +1,104 @@
 <?php
 include_once 'Cliente.php';
 include_once 'Cuenta.php';
+/*pruebas previas para verificar el funcionaminto correcto de las clases*/
 /*creamos clientes*/
 $cliente1 = new Cliente("Alberto", "Gonzalez");
 $cliente2 = new Cliente("Irene", "Alvarez");
 $cliente2->setApellido("Alvarez de Eulate");
 $cliente3 = new Cliente("Carlos", "Pascual");
-
+/*mostramos los datos creados de los clientes*/
 echo $cliente1->getNombre() . " " . $cliente1->getApellido() . PHP_EOL;
 echo $cliente2->getNombre() . " " . $cliente2->getApellido() . PHP_EOL;
 /*creamos cuentas a los clientes*/
 $cliente1->agregarCuenta(new Cuenta (1, 50));
 $cliente1->agregarCuenta(new Cuenta (2, 0));
 $cliente2->agregarCuenta(new Cuenta (1, 0));
-
+/* usamos la función mostrar datos sobre los clientes creados*/
 $cliente1-> mostrarDatos();
 $cliente2-> mostrarDatos();
-
-$cliente1->getCuentas()[1]->ingresarDinero(100);
+/* añadimos dinero a una cuenta de un cliente */
+$cliente1->getCuentas()[1]->ingresarDinero(100); // añadimos dinero a la cuenta 2 (Posicion [1]) del cliente1
+/* cremos un array para volcar las cuentas del cliente1*/
 $cuentas = $cliente1->getCuentas();
+/*recorremos la cuentas y mostramos los número de estas*/
 foreach ($cuentas as $cuenta) {
     echo $cuenta->getNumCuenta() . PHP_EOL;
 }
-
+/*usamos el metodo mostrarDatos sobre el $cliente1*/
 $cliente1-> mostrarDatos();
 echo PHP_EOL;
 
 /*inicio código para creación aplicación*/
 $clientes = array(); /*creamos array para almacenar clientes*/
-$numCuentas = array();/*creamos array para almacenar numeros de cuenta buscados*/
+$numCuentas = array();/*creamos array para almacenar numeros de cuenta buscados y pasarlos entre las distintas funciones*/
 $idCliente = array();/*creamos array para almacenar nombres de los clientes y pasarlos entre las distintas funciones*/
-/*Creamos clientes y los añadimos al array clientes para hacer pruebas*/
-$cliente = new Cliente("Alberto", "Gonzalez");
-$cliente->agregarCuenta(new Cuenta (1, 50));
-$cliente->agregarCuenta(new Cuenta (2, 0));
-array_push($clientes, $cliente);
+/*Creamos clientes y los añadimos al array clientes para hacer pruebas y no tener que introducirlos cada inicio del programa*/
+$cliente = new Cliente("Alberto", "Gonzalez"); // creamos cliente
+$cliente->agregarCuenta(new Cuenta (1, 50)); // creamos cuenta 1 con 50 euros
+$cliente->agregarCuenta(new Cuenta (2, 0)); // creamos cuenta 2 con 0 euros
+array_push($clientes, $cliente); // añadimos el cliente al Array
 
-$cliente = new Cliente("Irene", "Alvarez");
-$cliente->agregarCuenta(new Cuenta (1, 0));
-$cliente->agregarCuenta(new Cuenta (2, 80));
-array_push($clientes, $cliente);
+$cliente = new Cliente("Irene", "Alvarez"); // creamos cliente
+$cliente->agregarCuenta(new Cuenta (1, 0)); // creamos cuenta 1 con 0 euros
+$cliente->agregarCuenta(new Cuenta (2, 80)); // creamos cuenta 2 con 80 euros
+array_push($clientes, $cliente); // añadimos el cliente al Array
 
-$cliente = new Cliente("Carlos", "Pascual");
-$cliente->agregarCuenta(new Cuenta (1, 50));
-$cliente->agregarCuenta(new Cuenta (2, 150));
-$cliente->agregarCuenta(new Cuenta (3, 0));
-array_push($clientes, $cliente);
+$cliente = new Cliente("Carlos", "Pascual"); // creamos cliente
+$cliente->agregarCuenta(new Cuenta (1, 50)); // creamos cuenta 1 con 50 euros
+$cliente->agregarCuenta(new Cuenta (2, 150)); // creamos cuenta 2 con 150 euros
+$cliente->agregarCuenta(new Cuenta (3, 0)); // creamos cuenta 3 con 0 euros
+array_push($clientes, $cliente); // añadimos el cliente al Array
 
-
+/*delcaramos una función que contiene el texto  de menú de la plicación*/
 function menu() {
     echo "APLICACIÓN CUENTAS BANCARIAS" . PHP_EOL;
     echo "----------------------------" . PHP_EOL;
     echo "Escoge una opción: " . PHP_EOL . "0. Salir de la aplicación" . PHP_EOL . "1. Crear cliente" . PHP_EOL . "2. Dar de baja un cliente" . PHP_EOL . "3. Crear cuenta a un cliente" . PHP_EOL . "4. Hacer ingresos" . PHP_EOL . "5. Retirar dinero" . PHP_EOL . "6. Mostrar datos de un cliente" . PHP_EOL. "7. Mostrar lista de clientes" . PHP_EOL;
 }
-
- do {
-    menu();
-    $opcion = trim(fgets(STDIN));
-
+/* generamos el menú para la aplicacion*/
+ do { // lo contenmos dentro de un do while que nos mantine dentro de la applicacion simpre que no escogamos 0
+    menu(); // llamamos al menú
+    $opcion = trim(fgets(STDIN)); // pedimos la elección al usuario
+    /* switch con las diferentes opciones de nuestra app*/
     switch ($opcion) {
-        case 0:
+        case 0: //nos saca de la app y damos un mensaje de agradecimento por su uso
             echo "Gracias por usar la aplicación" . PHP_EOL;
             break;
-        case 1:
-            $posicion = buscarCliente($clientes, $idCliente);
-            crearCliente($clientes, $idCliente, $posicion);
+        case 1: // para crear el cliente
+            $posicion = buscarCliente($clientes, $idCliente); // llamanda a la función buscar que recibe el Array $clientes e $idCliente cliente nos devuelve una posición del array $clientes
+            crearCliente($clientes, $idCliente, $posicion); // llammos a la función crearCliente que recibe recibe el Array $clientes e $idCliente y la posición creada por la busqueda
             break;
-        case 2:
-            $posicion = buscarCliente($clientes, $idCliente);
-            borrarCliente($clientes, $idCliente, $posicion);
+        case 2: // para borrar cliente
+            $posicion = buscarCliente($clientes, $idCliente);// reutilizamos la busqueda de Cliente
+            borrarCliente($clientes, $idCliente, $posicion);// llammos a la función borrarCliente que recibe recibe el Array $clientes e $idCliente y la posición creada por la busqueda
             break;
-        case 3:
-            $posicion = buscarCliente($clientes, $idCliente);
-            $posicionCuenta = buscarCuenta($clientes, $idCliente, $numCuentas, $posicion);
-            crearCuenta($clientes, $idCliente, $posicion, $posicionCuenta, $numCuentas);
+        case 3: // para crear cuentas a un cliente
+            $posicion = buscarCliente($clientes, $idCliente);// reutilizamos la busqueda de Cliente
+            $posicionCuenta = buscarCuenta($clientes, $idCliente, $numCuentas, $posicion);// llamanda a la función buscarCuenta que recibe el Array $clientes, $idCliente y  cliente nos devuelve una posición del array $cuentas del cliente buscado anteriomente
+            crearCuenta($clientes, $idCliente, $posicion, $posicionCuenta, $numCuentas);// llamadaa al metodo crearCuenta  que recibe los Array $clientes e $idCliente, $numCuentas y las posciones de clente $posicion y de cuentas $posiconCuenta
             break;
-        case 4:
-            $posicion = buscarCliente($clientes, $idCliente);
-            $posicionCuenta = buscarCuenta($clientes, $idCliente, $numCuentas, $posicion);
-            ingresarDinero($clientes, $idCliente, $posicion, $posicionCuenta, $numCuentas);
+        case 4: // hacer ingresos en una de las cuentas de un cliente
+            $posicion = buscarCliente($clientes, $idCliente);// reutilizamos la busqueda de Cliente
+            $posicionCuenta = buscarCuenta($clientes, $idCliente, $numCuentas, $posicion); // reutilizamos buscarCuenta
+            ingresarDinero($clientes, $idCliente, $posicion, $posicionCuenta, $numCuentas); // Llamada al metodo ingreasrDinero que recibe los Array $clientes e $idCliente, $numCuentas y las posciones de clente $posicion y de cuentas $posiconCuenta
             break;
-        case 5:
-            $posicion = buscarCliente($clientes, $idCliente);
-            $posicionCuenta = buscarCuenta($clientes, $idCliente, $numCuentas, $posicion);
-            retirarDinero($clientes, $idCliente, $posicion, $posicionCuenta, $numCuentas);
+        case 5: // retirar dinero de una de las cuentas de un cliente
+            $posicion = buscarCliente($clientes, $idCliente);// reutilizamos la busqueda de Cliente
+            $posicionCuenta = buscarCuenta($clientes, $idCliente, $numCuentas, $posicion); // reutilizamos buscarCuenta
+            retirarDinero($clientes, $idCliente, $posicion, $posicionCuenta, $numCuentas);// Llamada al metodo retirarrDinero que recibe los Array $clientes e $idCliente, $numCuentas y las posciones de clente $posicion y de cuentas $posiconCuenta
             break;
-        case 6:
-            $posicion = buscarCliente($clientes, $idCliente);
-            mostrarDatos($clientes, $posicion, $idCliente);
+        case 6: // mostrar los datos de un cliente
+            $posicion = buscarCliente($clientes, $idCliente);// reutilizamos la busqueda de Cliente
+            mostrarDatos($clientes, $posicion, $idCliente); //llmada a la función mostrarDatos recibe $clientes $posicion $idCliente
             break;
-        case 7:
-            listarClientes($clientes);
+        case 7: // mostrar lista de clientes
+            listarClientes($clientes); // llamada al metodo listarClientes
             break;
         default:
-            echo "Opción no válida";
+            echo "Opción no válida"; //en caso de no seleccionar un número correcto nos lo indica
     }
- }while ($opcion != 0);
+ }while ($opcion != 0); // while que nos mantiene en el swich mientras no selecionemos 0
 
  function buscarCliente(&$clientes, &$idCliente) {
     $posicion = -1;

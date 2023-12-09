@@ -35,10 +35,10 @@ class Cliente {
     public function mostrarDatos () {
         if (empty($this->cuentas)) { // en el caso que no tenga cuentas nos lo comunica
             echo PHP_EOL . "+ El cliente " . $this->getNombre() . " ". $this->getApellido() . " No tiene cuentas.". PHP_EOL;
-        } else { // en caso contrario 
-            echo PHP_EOL . "+ El cliente " . $this->getNombre() . " ". $this->getApellido() . " Dispone de las siguientes cuentas: ". PHP_EOL;
-        foreach ($this->getCuentas() as $cuenta) {
-            echo "La cuenta " . $cuenta->getNumCuenta() . " con un saldo de " . $cuenta->getSaldo(). " euros." . PHP_EOL;
+        } else { // en caso contrario accede a los datos y los muestra
+            echo PHP_EOL . "+ El cliente " . $this->getNombre() . " ". $this->getApellido() . " Dispone de las siguientes cuentas: ". PHP_EOL; // mostramos atributos nombre y apellido
+        foreach ($this->getCuentas() as $cuenta) { // recorremos el array cuentas
+            echo "La cuenta " . $cuenta->getNumCuenta() . " con un saldo de " . $cuenta->getSaldo(). " euros." . PHP_EOL; // mostramos cada cuenta y los valores de sus atributos
         }
         
         }
