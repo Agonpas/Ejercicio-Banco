@@ -87,7 +87,7 @@ function menu() {
             break;
         case 6:
             $posicion = buscarCliente($clientes, $idCliente);
-            mostrarDatos($clientes, $posicion);
+            mostrarDatos($clientes, $posicion, $idCliente);
             break;
         case 7:
             listarClientes($clientes);
@@ -127,6 +127,7 @@ function menu() {
         echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no estaba registrado" . PHP_EOL;
         $cliente = new Cliente($idCliente[0], $idCliente[1]);
         array_push ($clientes, $cliente);
+        echo "y se  ha añadido a nuestros clientes." . PHP_EOL;
     } else {
         echo "El clienta ya estaba registrado" . PHP_EOL;
     }
@@ -215,13 +216,16 @@ function menu() {
         echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no está registrado" . PHP_EOL;
     }
  }
- function mostrarDatos(&$clientes, $posicion) {
+
+ function mostrarDatos(&$clientes, $posicion, &$idCliente) {
     if ($posicion != -1) {
         $cliente = $clientes [$posicion];
         $cliente -> mostrarDatos();
+    } else {
+        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no está registrado" . PHP_EOL;
     }
-
  }
+
  function listarClientes(&$clientes){
     foreach ($clientes as $cliente){
         echo $cliente->getNombre() . " " . $cliente->getApellido() . PHP_EOL;
