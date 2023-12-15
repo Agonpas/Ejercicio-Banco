@@ -2,11 +2,11 @@
 include_once 'Cuenta.php';
 /*creamos clase cliente*/
 class Cliente {
-    private $nombre;
-    private $apellido;
-    private $cuentas = array (); // en los atributos añadimos un array para contener las cuentas (pueden ser varias) de cada clientes
+    private string $nombre;
+    private string $apellido;
+    private array $cuentas = array (); // en los atributos añadimos un array para contener las cuentas (pueden ser varias) de cada cliente
     /*constructor de la clase, no contiene el array cuentas, esto será accesible desde una funcion especifica para ello.*/
-    public function __construct ($nombre, $apellido)  {
+    public function __construct (string $nombre, string $apellido)  {
         $this->nombre = $nombre;
         $this->apellido = $apellido;
     }
@@ -18,8 +18,8 @@ class Cliente {
         $this->apellido = $apellido;
     }
       /* función para añadir cuentas*/
-    public function agregarCuenta (Cuenta $cuentas) { // cada vez que se usa se crea un objeto de la clase Cuenta y se añade al array list de cuentas del cliente
-        $this->cuentas[] = $cuentas;
+    public function agregarCuenta (Cuenta $cuenta) { // cada vez que se usa se crea un objeto de la clase Cuenta y se añade al array list de cuentas del cliente
+        $this->cuentas[] = $cuenta;
     }
     /*getters*/
     public function getNombre () {

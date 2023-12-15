@@ -1,8 +1,8 @@
 <?php
 /*Creamos clase Cuenta*/
-class Cuenta{
-    private $numCuenta;
-    private $saldo;
+class Cuenta {
+    private int $numCuenta;
+    private int $saldo;
 
     /*constructor*/
     public function __construct (int $numCuenta, int $saldo){
