@@ -100,54 +100,55 @@ function menu() {
     }
  }while ($opcion != 0); // while que nos mantiene en el swich mientras no selecionemos 0
 
- function buscarCliente(&$clientes, &$idCliente) {
-    $posicion = -1;
-    $i = 0;
-   
+ /* funcion para buscar clientes*/
+ function buscarCliente(&$clientes, &$idCliente) { //la función recibe los arrays de clientes (donde se almacena los clientes) y el array idCliente (usamos para compartir datos de busqueda)
+    $posicion = -1; // la variable posición es la que nos identifica el cliente dentro del array clientes en caso que exista y nos dirá en que posición se encuntra. En caso de no existir el valor será -1
+    $i = 0; //inicimaos la variable i a 0. Nos sirve para controlar el bucle while
+    /* solicitamos los datos del cleinte a buscar*/
     echo "Introduce nombre de cliente:" . PHP_EOL;
     $nombreCliente = trim(fgets(STDIN));
     echo "Introduce apellido de cliente:" . PHP_EOL;
     $apellidoCliente = trim(fgets(STDIN));
-
+    /* almacenamos los datos de nombre y apellido en las posiciones 0 y 1 para compartir dichos datos con otras funciones*/
     $idCliente [0] = $nombreCliente;
     $idCliente [1] = $apellidoCliente;
-    
-    while ($posicion == -1 && $i < sizeof($clientes)) {
-        foreach ($clientes as $i => $cliente) {
-            if ($cliente->getNombre() == $nombreCliente && $cliente->getApellido() == $apellidoCliente) {
-                $posicion = $i;
+    /* inciamos la busqueda propiamente dicha*/
+    while ($posicion == -1 && $i < sizeof($clientes)) { // bucle while que se ejecuta mientras posicion sea -1 y el numero de iteraciones sea menor que el tamaño del array $clientes
+        foreach ($clientes as $i => $cliente) {// Recorremos el array clientes almacenando los valores dentro de cliente en cada iteración
+            if ($cliente->getNombre() == $nombreCliente && $cliente->getApellido() == $apellidoCliente) { // obtenemos nombre y apellido y los comparamos con los datos del cliente buscado en caso de ser iguales
+                $posicion = $i; // igualamos la posición al número de iteración i. Esto nos sacará del bucle while y nos identificará la posición del cliente que hemos encontrado. Tiene la ventaja que no necesita recorrer todo el array en caso de un exito en la busqueda
             }
-            $i++;
+            $i++; // en caso de no haber coincidencia sumaremos 1 a i para seguir con el bucle
         }
         
     }
-    return $posicion; 
+    return $posicion; // una vez que ya no se complen las condiciones para mantenernos en el bucle while devolvemos la variable $pasicion que puede tener el valor -1 o un valor correspondiente a una posición dentro del array
 
  }
-
- function crearCliente(&$clientes, &$idCliente, $posicion) {
-    if ($posicion == -1) {
+/* función para la creación de un cliente*/
+ function crearCliente(&$clientes, &$idCliente, $posicion) { //recibe el array donde almacenamos los clientes, otro array dónde almacenamos el nombre y apellido del cliente y por último la posición encontrada a través del método Busqueda
+    if ($posicion == -1) { // en el caso de que la posición sea -1 sabemos que no existe el cliente y pasamos a registrarlo
         echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no estaba registrado" . PHP_EOL;
-        $cliente = new Cliente($idCliente[0], $idCliente[1]);
-        array_push ($clientes, $cliente);
-        echo "y se  ha añadido a nuestros clientes." . PHP_EOL;
+        $cliente = new Cliente($idCliente[0], $idCliente[1]); // creamos un nuevo cliente al array clientes dando como nombre y apellido de las posiciones 0 y 1 del array idCliente
+        array_push ($clientes, $cliente); //añado el cliente de la clase Cliente a nuestro Array de clientes
+        echo "y se  ha añadido a nuestros clientes." . PHP_EOL; // comunicamos que el cliente se ha añadido con éxito
     } else {
-        echo "El clienta ya estaba registrado" . PHP_EOL;
+        echo "El clienta ya estaba registrado" . PHP_EOL; // en el caso que la posición difiera de -1 sabemos que ya se encuentra registradd y lo comunicamos
     }
     
  }
-
- function borrarCliente(&$clientes, &$idCliente, $posicion){
-    if ($posicion != -1) {
-        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " está registrado y será borrado." . PHP_EOL;
-        unset($clientes[$posicion]);
-        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " se ha borrado correctamente." . PHP_EOL;
-    } else {
-        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no está registrado." . PHP_EOL;
+/* eliminar cliente*/
+ function borrarCliente(&$clientes, &$idCliente, $posicion){ //recibe el array donde almacenamos los clientes, otro array dónde almacenamos el nombre y apellido del cliente y por último la posición encontrada a través del método Busqueda
+    if ($posicion != -1) { // en el caso de que la posición sea diferente -1 sabemos que si existe el cliente y pasamos a borrarlo
+        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " está registrado y será borrado." . PHP_EOL; // comunico que se va a borrar
+        unset($clientes[$posicion]); // borramos el cliente del array clientes indicando la posición que nos ha devuelto la busqueda
+        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " se ha borrado correctamente." . PHP_EOL; // indicamos que se ha borrado
+    } else { // en el caso que el resultado sea -1 sabemos que el cliente no está en el array
+        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no está registrado." . PHP_EOL; // comunicamos que no se ha encontrado
     }
  }
-
- function buscarCuenta(&$clientes, &$idCliente, &$numCuentas, $posicion) {
+/* nuestra función para buscar cuentas*/
+ function buscarCuenta(&$clientes, &$idCliente, &$numCuentas, $posicion) { //recibe el array donde almacenamos los clientes, otro array dónde almacenamos el nombre y apellido del cliente, otro para almacenar las cuentas que buscamos y por último la posición encontrada a través del método Busqueda
     $i = 0; //creamos variable contador
     $posicionCuenta = -1; //creamos variable para posicionar cuenta
     if ($posicion != -1) { // si elcliente existe pasmos a:
@@ -155,68 +156,68 @@ function menu() {
         echo "Inrtroduce un mumero de cuenta para el cliente " . $idCliente[0] . " " . $idCliente[1] . PHP_EOL; // Solicitmaos al usuario la cuenta para crear.
         $numCuentaNuevo = trim(fgets(STDIN));; // recogemos el numero de cuenta a crear.
         $numCuentas[0] =$numCuentaNuevo; // almacenamos dicho numero en la posición 0 del array $numCuentas para poder pasar el número a otras funciones
-        $cuentas = $cliente->getCuentas();
-        while ($posicionCuenta == -1 && $i < sizeof($cuentas)){
-            foreach ($cuentas as $i=> $cuenta) {
-                if ($cuenta->getNumCuenta() == $numCuentaNuevo) {
-                    $posicionCuenta = $i;
+        $cuentas = $cliente->getCuentas(); // extraemos el Array de cuentas del cliente a través de la función get cuentas y almacenamos en $cuentas
+        while ($posicionCuenta == -1 && $i < sizeof($cuentas)){ // este bucle while es similar al de busqueda de clentes aplicado a cuentas. Mientras la posicion se -1 y el contador sea menor que el tamaño del array cunetas
+            foreach ($cuentas as $i=> $cuenta) { //recorremos el array cuentas
+                if ($cuenta->getNumCuenta() == $numCuentaNuevo) { // en cada iteracion comapramos el numero de cuenta a crear con los existentes en caso de que esto se cumpla
+                    $posicionCuenta = $i; // damos a posicionCuenta el valor de $i
                 } 
-                $i++;
+                $i++; // en caso que no hayamos encontrado la cuenta sumamos 1 a $i
             }
         }  
     }
-    return $posicionCuenta;
+    return $posicionCuenta; // la función devuelve la posición de la cuenta o -1 en caso de que no se haya encontrado dicha cuenta
  }
+/* función crear cuenta*/
+ function crearCuenta(&$clientes, &$idCliente, $posicion, $posicionCuenta, $numCuentas){ //recibe el array donde almacenamos los clientes, otro array dónde almacenamos el nombre y apellido del cliente, el array que guarda los clientes, otro para almacenar las cuentas que buscamos, la posción del clientre y de las cuentas y el array del número de cunenta buscado
+    if ($posicion != -1 && $posicionCuenta == -1) { // si el cliente existe y la cuenta no
+        $cliente = $clientes [$posicion]; // extrameos el cliente encontrado (a través de la posción) del array clientes
+        $cliente -> agregarCuenta(new Cuenta ($numCuentas[0], 0)); // le agregamos a ese cliente la cuenta almacenada en $numCuenta y de saldo la inicamos con 0 euros
+        echo "La cuenta " . $numCuentas[0] . " del cliente " . $idCliente[0] . " " . $idCliente[1] . " ha sido creada correctamente" . PHP_EOL; // comunicamos la creación de la cuneta
 
- function crearCuenta(&$clientes, &$idCliente, $posicion, $posicionCuenta, $numCuentas){
-    if ($posicion != -1 && $posicionCuenta == -1) {
-        $cliente = $clientes [$posicion];
-        $cliente -> agregarCuenta(new Cuenta ($numCuentas[0], 0));
-        echo "La cuenta " . $numCuentas[0] . " del cliente " . $idCliente[0] . " " . $idCliente[1] . " ha sido creada correctamente" . PHP_EOL;
-
-    } elseif ($posicion != -1 && $posicionCuenta != -1) {
-        echo "La cuenta " . $numCuentas[0] . " ya estaba registrada" . PHP_EOL;
+    } elseif ($posicion != -1 && $posicionCuenta != -1) { // en el caso de que exista el cliente y la cuenta
+        echo "La cuenta " . $numCuentas[0] . " ya estaba registrada" . PHP_EOL; // indicamos que la cuenta ya existía
     } else {
-        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no está registrado" . PHP_EOL;
+        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no está registrado" . PHP_EOL; // la terecera posibilidad es que el clinte no esté registrado y así lo comunicamos
     }
  }
+/* función para ingresar dinero*/
+ function ingresarDinero(&$clientes, &$idCliente, $posicion, $posicionCuenta, $numCuentas){ //recibe el array donde almacenamos los clientes, otro array dónde almacenamos el nombre y apellido del cliente, el array que guarda los clientes, otro para almacenar las cuentas que buscamos, la posción del clientre y de las cuentas y el array del número de cunenta buscado
+    if ($posicion != -1 && $posicionCuenta != -1) { // si tanto el cliente como la cuenta exiten
+        $cliente = $clientes [$posicion]; // extrameos el cliente encontrado (a través de la posción) del array clientes
+        echo "Introduce la cantidad a ingresar en la cuenta " . $numCuentas[0] . " del cliente " . $idCliente[0] . " " . $idCliente[1] . PHP_EOL; // solicitamos la cantidad a ingresar
+        $cantidadIngresar = trim(fgets(STDIN)); // almacenamos la cantidad en la variable $cantidadIngresar
+        $cliente -> getCuentas()[$posicionCuenta] -> ingresarDinero($cantidadIngresar); // accedemos a la cuenta buscada del cliente e ingresamos el dinero usando la función de clase ingresarDinero
+        echo "En la cuenta " . $numCuentas[0] . " del cliente " . $idCliente[0] . " " . $idCliente[1] . " se ha ingresado la cantidad de " . $cantidadIngresar . " euros." . PHP_EOL; // comunicamos que la operación se ha realizado
+        $saldoActual = $cliente -> getCuentas()[$posicionCuenta] -> getSaldo(); // almacenamos el saldo acutalizado de la cuneta en cuestión
+        echo "El saldo actualizado es de " . $saldoActual . " euros." . PHP_EOL; // mostramos el saldo de dicha cuenta
 
- function ingresarDinero(&$clientes, &$idCliente, $posicion, $posicionCuenta, $numCuentas){
-    if ($posicion != -1 && $posicionCuenta != -1) {
-        $cliente = $clientes [$posicion];
-        echo "Introduce la cantidad a ingresar en la cuenta " . $numCuentas[0] . " del cliente " . $idCliente[0] . " " . $idCliente[1] . PHP_EOL;
-        $cantidadIngresar = trim(fgets(STDIN));
-        $cliente -> getCuentas()[$posicionCuenta] -> ingresarDinero($cantidadIngresar);
-        echo "En la cuenta " . $numCuentas[0] . " del cliente " . $idCliente[0] . " " . $idCliente[1] . " se ha ingresado la cantidad de " . $cantidadIngresar . " euros." . PHP_EOL;
-        $saldoActual = $cliente -> getCuentas()[$posicionCuenta] -> getSaldo();
-        echo "El saldo actualizado es de " . $saldoActual . " euros." . PHP_EOL;
-
-    } elseif ($posicionCuenta == -1) {
-        echo "La cuenta no existe " . PHP_EOL;
+    } elseif ($posicion != -1 && $posicionCuenta == -1) { // si elcliente existe pero la cuenta no
+        echo "La cuenta no existe " . PHP_EOL; // lo comunicamos
     } else {
-        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no está registrado" . PHP_EOL;
+        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no está registrado" . PHP_EOL; //el último caso es que el cliente no existe y así lo hacemos saber
     }
  }
- function retirarDinero(&$clientes, &$idCliente, $posicion, $posicionCuenta, $numCuentas) {
-    if ($posicion != -1 && $posicionCuenta != -1) {
-        $cliente = $clientes [$posicion];
-        echo "Introduce la cantidad a retirar en la cuenta " . $numCuentas[0] . " del cliente " . $idCliente[0] . " " . $idCliente[1] . PHP_EOL;
-        $cantidadRetirar = trim(fgets(STDIN));
-        $saldoPrevio = $cliente -> getCuentas()[$posicionCuenta] -> getSaldo();
-        $cliente -> getCuentas()[$posicionCuenta] -> retirarDinero($cantidadRetirar);
-        $saldoActual = $cliente -> getCuentas()[$posicionCuenta] -> getSaldo();
-        if ($saldoPrevio == $saldoActual) {
-            echo "El saldo actualizado es de " . $saldoActual . " euros." . PHP_EOL;
-        } else {
-            echo "Se ha retirado la cantidad de " . $cantidadRetirar . " euros de la cuenta " . $numCuentas[0] . " del cliente " . $idCliente[0] . " " . $idCliente[1] . PHP_EOL;
-            echo "El saldo actualizado es de " . $saldoActual . " euros." . PHP_EOL;
+ /* pasamos a pillar dinero de la cuenta*/
+ function retirarDinero(&$clientes, &$idCliente, $posicion, $posicionCuenta, $numCuentas) { //recibe el array donde almacenamos los clientes, otro array dónde almacenamos el nombre y apellido del cliente, el array que guarda los clientes, otro para almacenar las cuentas que buscamos, la posción del clientre y de las cuentas y el array del número de cunenta buscado
+    if ($posicion != -1 && $posicionCuenta != -1) { // si tanto el cliente como la cuenta existen
+        $cliente = $clientes [$posicion]; // extrameos el cliente encontrado (a través de la posción) del array clientes
+        echo "Introduce la cantidad a retirar en la cuenta " . $numCuentas[0] . " del cliente " . $idCliente[0] . " " . $idCliente[1] . PHP_EOL; // solicitamos el dinero que quiere retirar el cliente
+        $cantidadRetirar = trim(fgets(STDIN)); // almacenamos la cantidad a retirar
+        $saldoPrevio = $cliente -> getCuentas()[$posicionCuenta] -> getSaldo(); // almaceno el dinero que tenemos antes de realizar la operación
+        $cliente -> getCuentas()[$posicionCuenta] -> retirarDinero($cantidadRetirar);// accedemos a la cuenta buscada del cliente y retiramos el dinero usando la función de clase retirarDinero 
+        $saldoActual = $cliente -> getCuentas()[$posicionCuenta] -> getSaldo(); // almacenamos el saldo acutalizado de la cuneta en cuestión
+        if ($saldoPrevio == $saldoActual) { // en el caso de que el saldo no haya variado es que el saldo es insuficiente y de esta manera ahorramos mensajes duplicados (la función retirarDinero incluye mensaje de saldo insufiente)
+            echo "El saldo actualizado es de " . $saldoActual . " euros." . PHP_EOL; // nos limitamos a dar el salo acutal
+        } else { // en caso de que si que se haya realizado la operación
+            echo "Se ha retirado la cantidad de " . $cantidadRetirar . " euros de la cuenta " . $numCuentas[0] . " del cliente " . $idCliente[0] . " " . $idCliente[1] . PHP_EOL; // resumimos el resultado de la operación
+            echo "El saldo actualizado es de " . $saldoActual . " euros." . PHP_EOL; // y damos el saldo acutalizado
         }
                
-
-    } elseif ($posicionCuenta == -1) {
-        echo "La cuenta no existe " . PHP_EOL;
+    } elseif ($posicion != -1 && $posicionCuenta == -1) { // si elcliente existe pero la cuenta no
+        echo "La cuenta no existe " . PHP_EOL; // lo comunicamos
     } else {
-        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no está registrado" . PHP_EOL;
+        echo "El cliente " . $idCliente[0] . " " . $idCliente[1] . " no está registrado" . PHP_EOL; // por último damos el mensaje de que el cliente no existe
     }
  }
 

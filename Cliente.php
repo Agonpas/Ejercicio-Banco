@@ -11,10 +11,10 @@ class Cliente {
         $this->apellido = $apellido;
     }
     /* setters*/
-    public function setNombre ($nombre) {
+    public function setNombre (string $nombre) {
         $this->nombre = $nombre;
     }
-    public function setApellido ($apellido) {
+    public function setApellido (string $apellido) {
         $this->apellido = $apellido;
     }
       /* función para añadir cuentas*/
@@ -22,13 +22,13 @@ class Cliente {
         $this->cuentas[] = $cuenta;
     }
     /*getters*/
-    public function getNombre () {
+    public function getNombre (): string {
         return $this->nombre;
     }
-    public function getApellido () {
+    public function getApellido (): string {
         return $this->apellido;
     }
-    public function getCuentas (){
+    public function getCuentas (): array{
         return $this->cuentas;
     }
     /*función para mostrar todos los datos*/
@@ -37,7 +37,7 @@ class Cliente {
             echo PHP_EOL . "+ El cliente " . $this->getNombre() . " ". $this->getApellido() . " No tiene cuentas.". PHP_EOL;
         } else { // en caso contrario accede a los datos y los muestra
             echo PHP_EOL . "+ El cliente " . $this->getNombre() . " ". $this->getApellido() . " Dispone de las siguientes cuentas: ". PHP_EOL; // mostramos atributos nombre y apellido
-        foreach ($this->getCuentas() as $cuenta) { // recorremos el array cuentas
+        foreach ($this->cuentas as $cuenta) { // recorremos el array cuentas
             echo "La cuenta " . $cuenta->getNumCuenta() . " con un saldo de " . $cuenta->getSaldo(). " euros." . PHP_EOL; // mostramos cada cuenta y los valores de sus atributos
         }
         
